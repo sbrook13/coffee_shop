@@ -33,9 +33,13 @@ class Cli
         sleep(1.5)
         puts "\n"
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> 03a88f2e836fb1ca03370b555ad63cc5da94cf7d
+=======
+
+>>>>>>> 7638095c99b224967b77ec463da2e0d581b0425d
         coffee_or_tea
     end    
 
