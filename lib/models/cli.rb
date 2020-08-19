@@ -234,7 +234,6 @@ class Cli
     def save_final
         save_drink = @prompt.yes?("Do you want to save this drink?")
         if save_drink
-            binding.pry
             Order.create(customer: Customer.find_by(name: @name), drink: @final_choice)
         else
             puts "Let's try another drink!"
