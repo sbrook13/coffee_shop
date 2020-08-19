@@ -12,7 +12,7 @@ flavored_americano = Drink.create({
     description: "A strong espresso drink made with water instead of milk with an added flavor of your choice. Great for a sweet drink if you're not fond of milk.",
     caffeine: true,
     milk: 0,
-    sweet: false,
+    sweet: true,
     temp: nil})
 iced_coffee = Drink.create ({
     name: "Iced Coffee", 
@@ -47,7 +47,7 @@ cortado = Drink.create({
     description: "An espresso drink that's a 1:2 ratio of espresso and steamed milk. Often the choice for those who want that strong kick of espresso, but still want that subtle creaminess of the milk", 
     caffeine: true, 
     milk: 1, 
-    sweet: false, 
+    sweet: false,
     temp: "hot"})
 cappuccino = Drink.create({
     name: "Cappuccino", 
@@ -67,7 +67,7 @@ undertow = Drink.create({
     name: "Undertow", 
     description: "A layered drink starting with syrup, usually vanilla, cold half and half, and topped with espresso to make a beautiful and delicious shot. Great for a quick and tasty burst of energy. Starbucks did not invent this.", 
     caffeine: true, 
-    milk: 3, 
+    milk: 1, 
     sweet: true,
     temp: "hot"})
 
