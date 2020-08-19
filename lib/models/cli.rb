@@ -32,8 +32,7 @@ class Cli
         puts "I'd be happy to help get the perfectly curated cup for you."
         sleep(1.5)
         puts "\n"
-
-        # coffee_or_tea
+        coffee_or_tea
     end    
 
     def coffee_or_tea
