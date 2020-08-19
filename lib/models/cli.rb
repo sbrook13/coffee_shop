@@ -1,7 +1,8 @@
+require 'pry'
 class Cli
     attr_accessor :user, :name
 
-    def initialize user=nil
+    def initialize 
         @user = nil
         @prompt = tty_prompt
         @sweet = nil
@@ -23,8 +24,35 @@ class Cli
         system "clear"
         puts "WELCOME TO THE DIRTY BEAN COFFEE SHOP!" 
         sleep(1)
+        is_new_customer = @prompt.yes?('Have you been in before?')
+        if is_new_customer == true
+            names 
+        else
+            sign_up
+        end
+    end
+
+    def sign_up
         puts "Can I get your name?"
         @name = gets.strip
+        Customer.create name: name
+        welcome
+    end
+
+    def names 
+        system "clear"
+        puts "WELCOME BACK!"
+        puts "\n"
+        names = Customer.all.reduce([]) do |names, customer|
+            names << customer.name
+        end
+        returning_customer = @prompt.select('What is your name:', names)
+        @name = returning_customer
+        welcome
+    end
+   
+
+    def welcome 
         system "clear"
         puts "Thanks, " + @name.capitalize + "!"
         sleep(0.5)
@@ -32,14 +60,42 @@ class Cli
         puts "I'd be happy to help get the perfectly curated cup for you."
         sleep(1.5)
         puts "\n"
-        coffee_or_tea
+        order_options
+
     end    
+
+    def order_options
+        menu_options = ["I need help deciding..", "I don't know, surprise me!", "Show me my past orders", "I'll come back another time. >> EXIT"]
+        choice = @prompt.select("You came to the right place! Do you know what you want to order?", menu_options)
+            if choice == "I need help deciding.."
+                system "clear"
+                puts "Great, let's get some more info."
+                sleep(0.5)
+                puts "\n"
+                coffee_or_tea
+            elsif choice == "I don't know, surprise me!"
+                random_drink
+            elsif choice == "Show me my past orders"
+                show_past_orders
+            else
+                goodbye
+            end       
+    end
+
+    def show_past_orders
+        Order.all.each do |order|
+            if order.customer.name = @name
+                puts order.drink.name
+            end
+        end
+        binding.pry
+        menu_options
+    end
 
     def coffee_or_tea
         system "clear"
-        
         choices = %w(Tea Coffee)
-        type = @prompt.select("What type of drink would you like?", choices, symbols: { marker: ">" })
+        type = @prompt.select("What type of drink would you like?", choices)
             if type == "Tea"
                 puts "Sorry this is just a coffeehouse. But we highly recommend the Teahouse in Boulder!"
                 sleep(1)
@@ -52,25 +108,9 @@ class Cli
                     end
             else
                 system "clear"
-                order_options                 
+                drink_options                 
             end  
     end  
-
-    def order_options
-        menu_options = ["I need help deciding..", "I don't know, surprise me!", "I'll come back another time. >> EXIT"]
-        choice = @prompt.select("You came to the right place! Do you know what you want to order?", menu_options)
-            if choice == "I need help deciding.."
-                system "clear"
-                puts "Great, let's get some more info."
-                sleep(0.5)
-                puts "\n"
-                drink_options
-            elsif choice == "I don't know, surprise me!"
-                random_drink
-            else
-                goodbye
-            end       
-    end
 
     def drink_options
         @caffeine = @prompt.yes?("Do you want a caffeinated drink?")
@@ -123,12 +163,11 @@ class Cli
     end
 
     def results    
-        drinks = Drink.where(milk: @milk.to_i || nil, sweet: @sweet || nil, temp: @temp || nil)
+        drinks = Drink.where(milk: [@milk.to_i, nil], sweet: [@sweet, nil], temp: [@temp.downcase, nil])
         system "clear"
         puts "Here's my suggestion(s):"
         puts "\n"
         i = 1
-
         drinks.each do |drink|
             if @caffeine == false
                 if @sweet == false
@@ -188,16 +227,23 @@ class Cli
             random_drink
         else
             puts "Good choice!"
+            @final_choice = Drink.find_by(name: selection)
             save_final
         end
     end
 
     def save_final
-        @prompt.yes?("Do you want to save this drink?")
-        @final_choice = Drink.find_by name: selection
+        save_drink = @prompt.yes?("Do you want to save this drink?")
+        if save_drink
+            Order.create(customer: Customer.find_by(name: @name), drink: @final_choice)
+        else
+            puts "Let's try another drink!"
+            order_options
+        end    
     end
 
     def random_drink
+        system "clear"
         puts "\n"
         puts "Here's a crowd pleaser:"
         puts "\n"
@@ -207,6 +253,7 @@ class Cli
         puts "______________________________"
         answer = @prompt.yes?("Does that sound good?")
         if answer == true
+            @final_choice = Drink.find_by(name: random.name)
             save_final
         else
             puts "I'll think of another one..."
