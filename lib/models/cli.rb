@@ -12,13 +12,39 @@ class Cli
         @milk_alt = nil
         @caffeine = nil
         @final_choice = nil
+        @spinner = tty_spinner
+        @banner = banner
     end
-
+        
     def tty_prompt
         TTY::Prompt.new(
-            symbols: {marker:'☕️'}            
+            symbols: {marker:'☕️'}
         )
     end
+
+    def tty_spinner
+        spinner = TTY::Spinner.new("[:spinner] Coffee's brewing ...", format: :star)
+    end
+
+    def banner
+        box = TTY::Box.frame(width: 63, height: 20, align: :center,) do        
+        " '  ____  _      _         ____                    
+        '   |  _ \(_)_ __| |_ _   _  | __ )  ___  __ _ _ __   
+        '   | | | | | '__| __| | | | |  _ \ / _ \/ _` | '_ \  
+        '   | |_| | | |  | |_| |_| | | |_) |  __| (_| | | | | 
+        '   |____/|_|_|   \__|\__, | |____/ \___|\__,_|_| |_| 
+        '     ____       __  _____/          __  ___          
+        '    / ___|___  / _|/ _| ___  ___   / / / \ \         
+        '   | |   / _ \| |_| |_ / _ \/ _ \ | | / / | |        
+        '   | |__| (_) |  _|  _|  __|  __/ | |/ /  | |        
+        '    \____\___/|_| |_|  \___|\___| | /_/   | |        
+        '                                   \_\   /_/         
+        
+            "end
+            print box
+            puts "\n"
+            sleep(3.5)
+        end
 
     def start
         system "clear"
@@ -61,7 +87,7 @@ class Cli
         sleep(1.5)
         puts "\n"
         order_options
-
+        spinner
     end    
 
     def order_options
@@ -88,7 +114,6 @@ class Cli
                 puts order.drink.name
             end
         end
-        binding.pry
         menu_options
     end
 
@@ -152,8 +177,10 @@ class Cli
         end
         
         if confirm == true
-            puts "Hmmmm.... Let me think...."
+            @spinner.auto_spin
             sleep(2.5)
+            @spinner.stop(" ☕️ Coffee's ready!")
+            sleep(1.5)
             results
         else
             puts "Let's try again..."
