@@ -10,12 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_13_224330) do
+ActiveRecord::Schema.define(version: 2020_08_19_003601) do
 
-  create_table "students", force: :cascade do |t|
-    t.string "first_name"
-    t.integer "age"
-    t.boolean "current_student"
+  create_table "customers", force: :cascade do |t|
+    t.string "name"
+  end
+
+  create_table "drinks", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.boolean "caffeine"
+    t.string "milk"
+    t.boolean "sweet"
+    t.string "temp"
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.integer "drink_id"
+    t.integer "user_id"
+    t.index ["drink_id"], name: "index_orders_on_drink_id"
+    t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
 end

@@ -1,9 +1,5 @@
-Student.create({
-    first_name: "Shelley",
-    current_student: true,
-    age: 27
-})
-
-Student.create(first_name: "Luis", age: 26, current_student: true)
-
-Student.new(first_name: "DJ", age: 25, current_student: true).save
+americano = Drink.create({name: "Americano", description: "A strong espresso drink with water", caffeine: true, milk: 0, sweet: false})
+iced_coffee = Drink.create ({name: "Iced Coffee", description: "A strong coffee beverage that's very customizable", caffeine: true, milk: 0, sweet: nil})
+latte = Drink.create({name: "Latte", description: "Espresso paired with steamed milk", caffeine: true, milk: 3, sweet: false})
+flavored_latte = Drink.create({name: "Flavored Latte",description: "Espresso paired with steamed milk and syrups", caffeine: true, milk: 3, sweet: true})
+frappe = Drink.create({name: "Frappe", description: "A blended drink with espresso, milk, and syrup", caffeine: true, milk: 3, sweet: true })
