@@ -61,6 +61,7 @@ class Cli
         sleep(1.5)
         puts "\n"
         order_options
+
     end    
 
     def order_options
