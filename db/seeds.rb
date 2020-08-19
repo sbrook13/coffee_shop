@@ -1,22 +1,24 @@
+Drink.destroy_all
+
 americano = Drink.create({
     name: "Americano",
     description: "A strong espresso drink made with water instead of milk. A great option for that espresso taste but make it last.", 
     caffeine: true, 
     milk: 0, 
-    sweet: false,
+    sweet: false, 
     temp: nil})
 flavored_americano = Drink.create({
     name: "Flavored Americano",
     description: "A strong espresso drink made with water instead of milk with an added flavor of your choice. Great for a sweet drink if you're not fond of milk.",
     caffeine: true,
     milk: 0,
-    sweet: false,
+    sweet: true,
     temp: nil})
 iced_coffee = Drink.create ({
     name: "Iced Coffee", 
     description: "A summer favorite! Strong in flavor and caffeine, this drink is super customizable! You can add milk and syrups to really make this drink exactly the what you want!", 
     caffeine: true, 
-    milk: 0, 
+    milk: nil, 
     sweet: nil,
     temp: "iced"})
 latte = Drink.create({
