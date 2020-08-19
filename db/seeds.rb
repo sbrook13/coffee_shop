@@ -4,7 +4,7 @@ americano = Drink.create({
     name: "Americano",
     description: "A strong espresso drink made with water instead of milk. A great option for that espresso taste but make it last.", 
     caffeine: true, 
-    milk: 0, 
+    milk: nil, 
     sweet: false, 
     temp: nil})
 flavored_americano = Drink.create({
