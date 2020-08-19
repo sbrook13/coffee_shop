@@ -124,7 +124,7 @@ class Cli
     end
 
     def results    
-        drinks = Drink.where(milk: @milk.to_i, sweet: @sweet || nil)
+        drinks = Drink.where(milk: @milk.to_i || nil, sweet: @sweet || nil, temp: @temp || nil)
         system "clear"
         puts "Here's my suggestion(s):"
         puts "\n"
