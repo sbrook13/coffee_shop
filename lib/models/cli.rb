@@ -32,6 +32,10 @@ class Cli
         puts "I'd be happy to help get the perfectly curated cup for you."
         sleep(1.5)
         puts "\n"
+<<<<<<< HEAD
+=======
+
+>>>>>>> 03a88f2e836fb1ca03370b555ad63cc5da94cf7d
         coffee_or_tea
     end    
 
