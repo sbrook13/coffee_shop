@@ -33,7 +33,7 @@ class App
         :center_x => true,
         :center_y => true,
         :bg => "white",
-        :bg_fill => true})
-    end
+        :bg_fill => true
+    end  
 
 end
