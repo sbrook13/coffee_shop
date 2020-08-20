@@ -32,7 +32,7 @@ class App
     end
    
     def self.print_coffee_image
-        Catpix::print_image("/Users/goldenolive/Desktop/tasks/coffee_shop/lib/models/image.png",
+        Catpix::print_image("../lib/models/image.png",
         options = {
         :limit_x => 1.0,
         :limit_y => 0,
