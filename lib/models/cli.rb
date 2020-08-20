@@ -21,8 +21,9 @@ class Cli
         binding.pry
         prompt = TTY::Prompt.new
         system "clear"
-        # App.play_music
-        #App.print_coffee_image
+         App.play_music
+        App.print_coffee_image
+
         sleep(1)
         puts "\n"
         puts "WELCOME TO THE DIRTY BEAN COFFEE SHOP!" 
@@ -51,9 +52,9 @@ class Cli
     end     
 
     def self.prep_drink
-        # spinner.auto_spin
+         spinner.auto_spin
         sleep(1.5)
-        # spinner.stop(" ☕️ Coffee's ready!")
+         spinner.stop(" ☕️ Coffee's ready!")
         sleep(1.5)
         choices = ["Order Again", "Exit"]
         answer = prompt.select("What else can we help you with?", choices)
@@ -66,9 +67,10 @@ class Cli
 
     def self.goodbye
         system "clear"
-        App.print_coffee_image
+         App.print_end_image
         puts "Goodbye, " + @name.capitalize + "!"
-        sleep(2)
+        sleep(1)
+         App.stop_music
         abort
     end  
 
