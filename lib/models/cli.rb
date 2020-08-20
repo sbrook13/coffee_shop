@@ -14,14 +14,14 @@ class Cli
     end
 
     def self.spinner
-        TTY::Spinner.new("[:spinner] Coffee's brewing ...", format: :star)
+        TTY::Spinner.new("[:spinner] Hmm, let me think ...", format: :star)
     end
 
     def start
-        binding.pry
+
         prompt = TTY::Prompt.new
         system "clear"
-         App.play_music
+        App.play_music
         App.print_coffee_image
 
         sleep(1)
@@ -52,9 +52,9 @@ class Cli
     end     
 
     def self.prep_drink
-         spinner.auto_spin
+        spinner.auto_spin
         sleep(1.5)
-         spinner.stop(" ☕️ Coffee's ready!")
+        spinner.stop(" ☕️ Coffee's ready!")
         sleep(1.5)
         choices = ["Order Again", "Exit"]
         answer = prompt.select("What else can we help you with?", choices)
@@ -67,10 +67,10 @@ class Cli
 
     def self.goodbye
         system "clear"
-         App.print_end_image
+        App.print_end_image
         puts "Goodbye, " + @name.capitalize + "!"
         sleep(1)
-         App.stop_music
+        App.stop_music
         abort
     end  
 

@@ -9,11 +9,10 @@ class App
     end
 
     def self.stop_music
-        sleep(20)
-        pid = fork{exec 'killall' 'afplay'}
+        pid = fork{exec 'killall', 'afplay'}
         
     end
-   
+
     def self.print_coffee_image
         Catpix::print_image("./lib/models/coffee1.png",
         options = {
@@ -33,7 +32,7 @@ class App
         :center_x => true,
         :center_y => true,
         :bg => "white",
-        :bg_fill => true
+        :bg_fill => true})
     end  
 
 end

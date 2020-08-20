@@ -4,11 +4,6 @@ class Customer < ActiveRecord::Base
 
     validates :name, presence: true
 
-    # def initialize 
-    #     @user = nil
-    #     @final_choice = nil
-    # end
-
     def self.prompt
         TTY::Prompt.new(
             symbols: {marker:'☕️'}
