@@ -28,8 +28,7 @@ class Cli
     def start
         system "clear"
         # App.play_music
-        App.banner
-        App.print_coffee_image
+        # App.print_coffee_image
         sleep(1)
         puts "WELCOME TO THE DIRTY BEAN COFFEE SHOP!" 
         sleep(1)
@@ -316,9 +315,10 @@ class Cli
 
     def goodbye
         system "clear"
-        App.print_coffee_image
+        # App.print_end_image
         puts "Goodbye, " + @name.capitalize + "!"
-        sleep(2)
+        sleep(1)
+        # App.stop_music
         abort
     end    
 
