@@ -30,6 +30,7 @@ class Cli
         App.banner
         puts "WELCOME TO THE DIRTY BEAN COFFEE SHOP!" 
         sleep(1)
+        puts "\n"
         is_new_customer = @prompt.yes?('Have you been in before?')
         if is_new_customer == true
             names 
@@ -43,6 +44,7 @@ class Cli
         @name = gets.strip
         Customer.create name: name
         welcome
+        order_options
     end
 
     def names 
@@ -51,12 +53,12 @@ class Cli
         puts "\n"
         names = Customer.all.reduce([]) do |names, customer|
             names << customer.name
-        end
+        end.sort
         returning_customer = @prompt.select('What is your name:', names)
         @name = returning_customer
         welcome
+        return_customer_menu
     end
-   
 
     def welcome 
         system "clear"
@@ -66,22 +68,55 @@ class Cli
         puts "I'd be happy to help get the perfectly curated cup for you."
         sleep(1.5)
         puts "\n"
-        main_menu
         @spinner
     end    
 
-    def main_menu
+    def return_customer_menu
         menu = ["New Order", "See Past Orders", "I'll come back another time. >> EXIT"]
         choice = @prompt.select("How can we help you today?", menu)
             if choice == "New Order"
-                coffee_or_tea
+                order_options
             elsif choice == "See Past Orders"
+                system "clear"
                 show_past_orders
             else
                 goodbye
             end    
     end    
-        
+
+    def show_past_orders
+        system "clear"
+        reorder = Order.all.map do |order|
+            if order.customer.name == @name
+                order.drink.name
+            end.uniq
+        end
+        reorder << "New Order"
+        order = @prompt.select("Select a drink:", reorder)
+        if order == "New Order"
+            order_options
+        else
+            @final_choice = order
+            save_final
+        end
+    end 
+
+    def order_options
+        menu_options = ["I need help deciding..", "I don't know, surprise me!", "I'll come back another time. >> EXIT"]
+        choice = @prompt.select("Do you know what you want to order?", menu_options)
+            if choice == "I need help deciding.."
+                system "clear"
+                puts "Great, let's get some more info."
+                sleep(0.5)
+                puts "\n"
+                coffee_or_tea
+            elsif choice == "I don't know, surprise me!"
+                random_drink
+            else
+                goodbye
+            end       
+    end
+
     def coffee_or_tea
         system "clear"
         choices = %w(Tea Coffee)
@@ -93,47 +128,14 @@ class Cli
                     if start_over == true
                         system "clear"
                         puts "You came to the right place!"
-                        order_options
+                        drink_options
                     else
                         goodbye
                     end
             else
                 system "clear"
-                order_options                 
+                drink_options                 
             end  
-    end 
-
-    def order_options
-        menu_options = ["I need help deciding..", "I don't know, surprise me!", "I'll come back another time. >> EXIT"]
-        choice = @prompt.select("Do you know what you want to order?", menu_options)
-            if choice == "I need help deciding.."
-                system "clear"
-                puts "Great, let's get some more info."
-                sleep(0.5)
-                puts "\n"
-                drink_options
-            elsif choice == "I don't know, surprise me!"
-                random_drink
-            else
-                goodbye
-            end       
-    end
-
-    def show_past_orders
-        system "clear"
-        reorder = Order.all.map do |order|
-            if order.customer.name == @name
-                order.drink.name
-            end
-        end
-        reorder << "Start Over"
-        order = @prompt.select("Select a drink:", reorder)
-        if order == "Start Over"
-            main_menu
-        else
-            @final_choice = order
-            save_final
-        end
     end 
 
     def drink_options
@@ -268,12 +270,16 @@ class Cli
         puts random.name
         puts random.description
         puts "______________________________"
-        answer = @prompt.yes?("Does that sound good?")
-        if answer == true
+        options = ["Yes", "Try Another Random Drink", "Start Over"]
+        answer = @prompt.select("Does that sound good?", options)
+        if answer == "Yes"
             @final_choice = Drink.find_by(name: random.name)
             save_final
+        elsif answer == "Start Over"
+            order_options
         else
             puts "I'll think of another one..."
+            sleep(1)
             random_drink
         end    
     end
@@ -286,6 +292,7 @@ class Cli
             prep_drink
         else
             puts "Let's try another drink!"
+            puts "\n"
             order_options
         end    
     end
@@ -295,10 +302,6 @@ class Cli
         sleep(1.5)
         @spinner.stop(" ☕️ Coffee's ready!")
         sleep(1.5)
-        start_over
-    end
-
-    def start_over
         choices = ["Order Again", "Exit"]
         answer = @prompt.select("What else can we help you with?", choices)
             if answer == "Order Again"
@@ -312,7 +315,7 @@ class Cli
         system "clear"
         App.banner
         puts "Goodbye, " + @name.capitalize + "!"
-        sleep(1)
+        sleep(2)
         abort
     end    
 
