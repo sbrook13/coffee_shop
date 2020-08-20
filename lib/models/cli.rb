@@ -14,7 +14,7 @@ class Cli
         @final_choice = nil
         @spinner = tty_spinner
     end
-        
+
     def tty_prompt
         TTY::Prompt.new(
             symbols: {marker:'☕️'}
@@ -27,7 +27,10 @@ class Cli
 
     def start
         system "clear"
+        # App.play_music
         App.banner
+        App.print_coffee_image
+        sleep(1)
         puts "WELCOME TO THE DIRTY BEAN COFFEE SHOP!" 
         sleep(1)
         is_new_customer = @prompt.yes?('Have you been in before?')
@@ -310,7 +313,7 @@ class Cli
 
     def goodbye
         system "clear"
-        App.banner
+        App.print_coffee_image
         puts "Goodbye, " + @name.capitalize + "!"
         sleep(1)
         abort
