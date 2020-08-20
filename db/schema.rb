@@ -27,9 +27,9 @@ ActiveRecord::Schema.define(version: 2020_08_19_003601) do
 
   create_table "orders", force: :cascade do |t|
     t.integer "drink_id"
-    t.integer "user_id"
+    t.integer "customer_id"
+    t.index ["customer_id"], name: "index_orders_on_customer_id"
     t.index ["drink_id"], name: "index_orders_on_drink_id"
-    t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
 end

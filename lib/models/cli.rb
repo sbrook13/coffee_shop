@@ -13,7 +13,6 @@ class Cli
         @caffeine = nil
         @final_choice = nil
         @spinner = tty_spinner
-        @banner = banner
     end
         
     def tty_prompt
@@ -26,28 +25,9 @@ class Cli
         spinner = TTY::Spinner.new("[:spinner] Coffee's brewing ...", format: :star)
     end
 
-    def banner
-        box = TTY::Box.frame(width: 63, height: 20, align: :center,) do        
-        " '  ____  _      _         ____                    
-        '   |  _ \(_)_ __| |_ _   _  | __ )  ___  __ _ _ __   
-        '   | | | | | '__| __| | | | |  _ \ / _ \/ _` | '_ \  
-        '   | |_| | | |  | |_| |_| | | |_) |  __| (_| | | | | 
-        '   |____/|_|_|   \__|\__, | |____/ \___|\__,_|_| |_| 
-        '     ____       __  _____/          __  ___          
-        '    / ___|___  / _|/ _| ___  ___   / / / \ \         
-        '   | |   / _ \| |_| |_ / _ \/ _ \ | | / / | |        
-        '   | |__| (_) |  _|  _|  __|  __/ | |/ /  | |        
-        '    \____\___/|_| |_|  \___|\___| | /_/   | |        
-        '                                   \_\   /_/         
-        
-            "end
-            print box
-            puts "\n"
-            sleep(3.5)
-        end
-
     def start
         system "clear"
+        App.banner
         puts "WELCOME TO THE DIRTY BEAN COFFEE SHOP!" 
         sleep(1)
         is_new_customer = @prompt.yes?('Have you been in before?')
@@ -86,37 +66,22 @@ class Cli
         puts "I'd be happy to help get the perfectly curated cup for you."
         sleep(1.5)
         puts "\n"
-        order_options
-        spinner
+        main_menu
+        @spinner
     end    
 
-    def order_options
-        menu_options = ["I need help deciding..", "I don't know, surprise me!", "Show me my past orders", "I'll come back another time. >> EXIT"]
-        choice = @prompt.select("You came to the right place! Do you know what you want to order?", menu_options)
-            if choice == "I need help deciding.."
-                system "clear"
-                puts "Great, let's get some more info."
-                sleep(0.5)
-                puts "\n"
+    def main_menu
+        menu = ["New Order", "See Past Orders", "I'll come back another time. >> EXIT"]
+        choice = @prompt.select("How can we help you today?", menu)
+            if choice == "New Order"
                 coffee_or_tea
-            elsif choice == "I don't know, surprise me!"
-                random_drink
-            elsif choice == "Show me my past orders"
+            elsif choice == "See Past Orders"
                 show_past_orders
             else
                 goodbye
-            end       
-    end
-
-    def show_past_orders
-        Order.all.each do |order|
-            if order.customer.name = @name
-                puts order.drink.name
-            end
-        end
-        menu_options
-    end
-
+            end    
+    end    
+        
     def coffee_or_tea
         system "clear"
         choices = %w(Tea Coffee)
@@ -127,15 +92,49 @@ class Cli
                 start_over = @prompt.yes?("Do you to order a coffee instead?")
                     if start_over == true
                         system "clear"
+                        puts "You came to the right place!"
                         order_options
                     else
                         goodbye
                     end
             else
                 system "clear"
-                drink_options                 
+                order_options                 
             end  
-    end  
+    end 
+
+    def order_options
+        menu_options = ["I need help deciding..", "I don't know, surprise me!", "I'll come back another time. >> EXIT"]
+        choice = @prompt.select("Do you know what you want to order?", menu_options)
+            if choice == "I need help deciding.."
+                system "clear"
+                puts "Great, let's get some more info."
+                sleep(0.5)
+                puts "\n"
+                drink_options
+            elsif choice == "I don't know, surprise me!"
+                random_drink
+            else
+                goodbye
+            end       
+    end
+
+    def show_past_orders
+        system "clear"
+        reorder = Order.all.map do |order|
+            if order.customer.name == @name
+                order.drink.name
+            end
+        end
+        reorder << "Start Over"
+        order = @prompt.select("Select a drink:", reorder)
+        if order == "Start Over"
+            main_menu
+        else
+            @final_choice = order
+            save_final
+        end
+    end 
 
     def drink_options
         @caffeine = @prompt.yes?("Do you want a caffeinated drink?")
@@ -178,8 +177,9 @@ class Cli
         
         if confirm == true
             @spinner.auto_spin
-            sleep(2.5)
+            sleep(2)
             @spinner.stop(" ☕️ Coffee's ready!")
+            #thinking just a different description like.. "thinking.." would be better and I copied this to when the order is finalized
             sleep(1.5)
             results
         else
@@ -241,8 +241,8 @@ class Cli
                     end
                 end        
             puts "\n"
-            i+=1
             end    
+            i+=1
         end  
         sleep(1.5)
         puts"\n"
@@ -257,16 +257,6 @@ class Cli
             @final_choice = Drink.find_by(name: selection)
             save_final
         end
-    end
-
-    def save_final
-        save_drink = @prompt.yes?("Do you want to save this drink?")
-        if save_drink
-            Order.create(customer: Customer.find_by(name: @name), drink: @final_choice)
-        else
-            puts "Let's try another drink!"
-            order_options
-        end    
     end
 
     def random_drink
@@ -288,10 +278,41 @@ class Cli
         end    
     end
 
+    def save_final
+        save_drink = @prompt.yes?("Do you want to order this drink?")
+        system "clear"
+        if save_drink
+            Order.create(customer: Customer.find_by(name: @name), drink: @final_choice)
+            prep_drink
+        else
+            puts "Let's try another drink!"
+            order_options
+        end    
+    end
+
+    def prep_drink
+        @spinner.auto_spin
+        sleep(1.5)
+        @spinner.stop(" ☕️ Coffee's ready!")
+        sleep(1.5)
+        start_over
+    end
+
+    def start_over
+        choices = ["Order Again", "Exit"]
+        answer = @prompt.select("What else can we help you with?", choices)
+            if answer == "Order Again"
+                order_options
+            else
+                goodbye
+            end
+    end
+
     def goodbye
         system "clear"
+        App.banner
         puts "Goodbye, " + @name.capitalize + "!"
-        sleep(1.5)
+        sleep(1)
         abort
     end    
 
