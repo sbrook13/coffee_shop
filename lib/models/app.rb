@@ -10,7 +10,7 @@ class App
 
     def self.stop_music
         sleep(20)
-        pid = fork{exec 'killall' 'afplay'}
+        pid = fork{exec 'killall', 'afplay'}
         
     end
    
@@ -33,7 +33,7 @@ class App
         :center_x => true,
         :center_y => true,
         :bg => "white",
-        :bg_fill => true
+        :bg_fill => true})
     end  
 
 end
