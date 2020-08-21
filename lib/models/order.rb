@@ -1,11 +1,15 @@
 class Order < ActiveRecord::Base
     belongs_to :drink
     belongs_to :customer
-   
+
     def self.prompt
         TTY::Prompt.new(
             symbols: {marker:'☕️'}
         )
+    end
+
+    def self.spinner
+        TTY::Spinner.new("[:spinner] Hmmm, Let me think ...", format: :star)
     end
 
     def self.assign_customer(name)
@@ -92,9 +96,8 @@ class Order < ActiveRecord::Base
         end
         
         if confirm == true
-            # spinner.auto_spin
-            sleep(2)
-            # spinner.stop(" ☕️ Coffee's ready!")
+            sleep(0.5)
+            puts "Hmmm.. Let me think.."
             sleep(1.5)
             results
         else
