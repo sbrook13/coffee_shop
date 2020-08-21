@@ -20,7 +20,6 @@ class Customer < ActiveRecord::Base
     end
 
     def self.names 
-        prompt = TTY::Prompt.new
         system "clear"
         system "figlet WELCOME BACK! | lolcat -a -d 5"
         puts "\n"
@@ -53,14 +52,15 @@ class Customer < ActiveRecord::Base
             if order.customer_id == find_customer_id
                 order.ordered_drink
             end
-        end
+        end.reject! {|x| x.nil?}
         reorder << "New Order"
         reorder = reorder.uniq
         order = prompt.select("Select a drink:", reorder)
         if order == "New Order"
             Order.order_options
         else
-            @@final_choice = order
+            Order.custom_name(order)
+            Order.original_drink(Order.all.where(customer: Customer.find_customer_id, ordered_drink: order).pluck(:drink_id)[0])
             Order.save_final
         end
     end 

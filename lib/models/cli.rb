@@ -23,7 +23,7 @@ class Cli
         App.play_music
         App.print_coffee_image
         sleep(1)
-        puts "\n"
+        system "clear"
         system "echo WELCOME TO THE | lolcat -a -d 20"
         system "figlet DIRTY BEAN | lolcat -a -d 5"
         system "figlet COFFEE SHOP | lolcat -a -d 5"
@@ -42,7 +42,6 @@ class Cli
     end  
 
     def self.return_customer_menu
-        prompt = TTY::Prompt.new
         menu = ["New Order", "See Past Orders", "I'll come back another time. >> EXIT"]
         choice = prompt.select("How can we help you today?", menu)
             if choice == "New Order"
@@ -58,9 +57,12 @@ class Cli
 
     def self.prep_drink
         @@spinner.auto_spin
-        sleep(2)
-        @@spinner.stop(" ☕️ Coffee's ready!")
+        sleep(1.5)
+        @@spinner.stop
+        system "clear"
+        system "figlet Your Coffee Is Ready - ENJOY! | lolcat -a -d 5"
         sleep(0.5)
+        puts "\n"
         choices = ["Order Again", "Exit"]
         answer = prompt.select("What else can we help you with?", choices)
             if answer == "Order Again"
@@ -72,7 +74,7 @@ class Cli
 
     def self.goodbye
         system "clear"
-        App.print_end_image
+        # App.print_end_image
         puts "\n"
         system "figlet GOODBYE! | lolcat -a -d 10"
         sleep(0.5)

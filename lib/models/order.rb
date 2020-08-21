@@ -232,4 +232,12 @@ class Order < ActiveRecord::Base
         end    
     end
 
+    def self.original_drink(drink_id)
+        @@final_choice = Drink.all.find(drink_id)
+    end
+
+    def self.custom_name(name)
+        @@ordered_drink = name
+    end
+
 end
