@@ -1,71 +1,69 @@
-# Mod 1 ActiveRecord Starter Repo
+# Mod 1: # Mod 1 Dirty Bean Coffee Shop
 
-In `config/database.yml`, you can change the name of the database from `db/cats.sqlite3` to whatever reflects your project. For example: `db/notes.sqlite3`. Doesn't really matter what you call the db. 
+  Not sure what to order at a coffee shop? People behind you starting to get impatient? Is your barista looking at you with dead eyes? Well now you have a handy app to help you decide what to order so you can avoid that awkward situation altogether!
 
 
 
-## ActiveRecord Methods
-These common ActiveRecord methods will help you interact with your database. Please refer to the ActiveRecord
-docs for what they do and how to use them. (If the docs talk about Rails, that is ok! ActiveRecord works very
- similar with or without Rails.)
+## Technologies!
+
 ```
-  .create (.new, .save)
-  .all
-  .count
-  .find
-  .find_by
-  .where
+  - Platform: Ruby
+
+  - ActiveRecord => version (6.0)
+  - Sinatra => version (2.0.8.1)
+  - Sinatra-ActiveRecord => version (2.0.18)
+  - Sqlite3 => version (1.4.2)
+  
+  Gems:
+  - gem "rake", "~> 13.0"
+  - gem "sqlite3", "~> 1.4"
+  - gem "require_all", "~> 3.0"
+  - gem "tty-prompt"
+  - gem "pastel-cli"
+  - gem "tty-progressbar"
+  - gem "tty-box"
+  - gem "tty-spinner"
+  - gem "tty-color"
+  - gem "tty-cursor"
+  - gem "catpix"
 ```
 
-#### Notes
+#### Setup
 
-*Remember*, any model that will have a corresponding table in the database needs to inherit from `ActiveRecord::Base`
-ex:
-```
-class Cat < ActiveRecord::Base
-  # customer methods defined here
-end
-```
+ To get this CLI app to work, follow these steps below:
 
-- To view database, you can run `sqlite3 db/cats.db`, then can run `.schema` or `.tables` and can run any SQL commands. (Don't need to do this anymore though! ActiveRecord gives us a schema file!)
-
-
-### Steps to setup Ruby app with activerecord
-(New for ActiveRecord 6.0)
-
-
-## The following steps are already done for you in this boiler plate repo. 
-## The steps below are provided to you as a reference only. 
-## You're not expected to memorize this (please don't).
+ ```
+ 1.) $ bundle install 
+    this gets all those lovely gems working~!
+ 2.) #Quick note!* If you do not have imagemackig installed, do the following:
+   $ brew imagemagick
+   if it doesn't work, follow up with this
+   $ brew unlink imagemagick
+   $ brew install imagemagick@6 && brew link imagemagick@6 --force
+ 3.) rake db:migrate! *then* rake db:seed
+ 4.) and voila! The app should work like a charm. 
 
 
-1. In root of project, run `bundle init`
-1. Add gems: 
-  `bundle add activerecord pry sinatra, sinatra-activerecord rake sqlite3 require_all`
-  run `bundle install`
-1. mkdir config and lib 
-1. mkdir lib/models
-1. touch config/environment.rb config/database.yml
-1. Create your model files and models (make sure to have your models inherit from ActiveRecord::Base)
-1. In config/environment.rb:
-```
-  require 'bundler/setup'
-  Bundler.require
 
-  require_all 'lib'
-```
-1. In config/database.yml:
-  ```
-  development:
-    adapter: sqlite3
-    database: db/cats.sqlite3
-  ```
-1. Touch Rakefile - require ‘config/environment.rb’ and require_relative ‘sinatra/activerecord/rake’ 
-1. Run rake -T to make sure we have access to raketasks
-1. Run `rake db:create_migration NAME=create_cats_table` (will create the db folder if it doesn’t already exist) and will add the migration file to db/migration
-1. Write migration file, then run `rake db:migrate`
-1. Then can see schema in file structure, can also drop into sqlite3 cats.db to see the tables and schema, but don’t really need to do that anymore. *Review rollback here*
-1. Create seeds in db/seeds.rb and run `rake db:seed`
-1. Now can put a pry in environment.rb to run <ModelName>.all and see your seeds.
 
-Make sure your models inherit from `ActiveRecord::Base`
+### Features!
+
+-Create a personal account with your name
+- You can save an account under your name and access your previous ordered drinks
+- Go through the steps of building your own custom drink of choice
+- If you don't want to commit to a decision yourself let the app choose for you with our random drink feature!
+
+
+### Status
+
+ Complete!...mostly. 
+
+## Inspiration
+
+The inspiration for this app is the mutual love for coffee between my partner and I. 
+
+## Contact Information
+
+Shelley: https://github.com/sbrook13
+Sydney:  https://github.com/sbrook13
+
