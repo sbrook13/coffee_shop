@@ -20,13 +20,8 @@ class Cli
         prompt = TTY::Prompt.new
         font = TTY::Font.new(:starwars)
         system "clear"
-<<<<<<< HEAD
-        # App.play_music
-        # App.print_coffee_image
-=======
         App.play_music
         App.print_coffee_image
->>>>>>> bcfc10a47775d5e9db35fc52346187f70c775a09
         sleep(1)
         system "clear"
         system "echo WELCOME TO THE | lolcat -a -d 20"
