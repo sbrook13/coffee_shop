@@ -21,7 +21,7 @@ class App
         :limit_y => 0,
         :center_x => true,
         :center_y => true,
-        :bg => "white",
+        :bg => "transparent",
         :bg_fill => false})
     end
 

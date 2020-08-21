@@ -1,4 +1,5 @@
 require 'bundler/setup'
+require 'lolcat'
 Bundler.require
 
 require_all 'lib'

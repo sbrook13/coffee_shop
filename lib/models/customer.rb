@@ -22,7 +22,7 @@ class Customer < ActiveRecord::Base
     def self.names 
         prompt = TTY::Prompt.new
         system "clear"
-        puts "WELCOME BACK!"
+        system "figlet WELCOME BACK! | lolcat -a -d 5"
         puts "\n"
         names = Customer.all.reduce([]) do |names, customer|
             names << customer.name

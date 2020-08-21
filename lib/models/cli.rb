@@ -18,12 +18,15 @@ class Cli
 
     def start
         prompt = TTY::Prompt.new
+        font = TTY::Font.new(:starwars)
         system "clear"
-        # App.play_music
+        App.play_music
         App.print_coffee_image
         sleep(1)
         puts "\n"
-        puts "WELCOME TO THE DIRTY BEAN COFFEE SHOP!" 
+        system "echo WELCOME TO THE | lolcat -a -d 20"
+        system "figlet DIRTY BEAN | lolcat -a -d 5"
+        system "figlet COFFEE SHOP | lolcat -a -d 5"
         sleep(1)
         puts "\n"
         if Customer.all.count == 0
@@ -43,6 +46,7 @@ class Cli
         menu = ["New Order", "See Past Orders", "I'll come back another time. >> EXIT"]
         choice = prompt.select("How can we help you today?", menu)
             if choice == "New Order"
+                system "clear"
                 Order.order_options
             elsif choice == "See Past Orders"
                 system "clear"
@@ -70,9 +74,9 @@ class Cli
         system "clear"
         App.print_end_image
         puts "\n"
-        puts "Goodbye!"
+        system "figlet GOODBYE! | lolcat -a -d 10"
         sleep(0.5)
-        # App.stop_music
+        App.stop_music
         abort
     end  
 

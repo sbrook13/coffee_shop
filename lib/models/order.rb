@@ -219,6 +219,7 @@ class Order < ActiveRecord::Base
     end
 
     def self.save_final
+        puts "\n"
         save_drink = prompt.yes?("Do you want to order this drink?")
         system "clear"
         if save_drink
