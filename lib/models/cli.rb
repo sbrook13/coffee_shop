@@ -1,10 +1,9 @@
 require 'pry'
 class Cli
-    attr_accessor :user, :name
+    attr_accessor :name
 
-    def initialize 
-        @user = nil
-
+    def initialize
+        @@spinner = tty_spinner
     end
 
     def self.prompt
@@ -13,14 +12,14 @@ class Cli
         )
     end
 
-    def self.spinner
-        TTY::Spinner.new("[:spinner] Coffee's brewing ...", format: :star)
+    def tty_spinner
+        spinner = TTY::Spinner.new("[:spinner] Coffee's brewing ...", format: :star)
     end
 
     def start
         prompt = TTY::Prompt.new
         system "clear"
-        App.play_music
+        # App.play_music
         App.print_coffee_image
         sleep(1)
         puts "\n"
@@ -54,9 +53,9 @@ class Cli
     end     
 
     def self.prep_drink
-        # spinner.auto_spin
+        @@spinner.auto_spin
         sleep(2)
-        # spinner.stop(" ☕️ Coffee's ready!")
+        @@spinner.stop(" ☕️ Coffee's ready!")
         sleep(0.5)
         choices = ["Order Again", "Exit"]
         answer = prompt.select("What else can we help you with?", choices)
@@ -72,8 +71,8 @@ class Cli
         App.print_end_image
         puts "\n"
         puts "Goodbye!"
-        sleep(1)
-        App.stop_music
+        sleep(0.5)
+        # App.stop_music
         abort
     end  
 
