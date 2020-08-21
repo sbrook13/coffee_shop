@@ -74,7 +74,7 @@ class Cli
 
     def self.goodbye
         system "clear"
-        # App.print_end_image
+        App.print_end_image
         puts "\n"
         system "figlet GOODBYE! | lolcat -a -d 10"
         sleep(0.5)
