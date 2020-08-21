@@ -13,7 +13,7 @@ class App
         pid = fork{exec 'killall', 'afplay'}
         
     end
-   
+
     def self.print_coffee_image
         Catpix::print_image("./lib/models/coffee1.png",
         options = {
@@ -31,9 +31,7 @@ class App
         :limit_x => 1.0,
         :limit_y => 0,
         :center_x => true,
-        :center_y => true,
-        :bg => "transparent",
-        :bg_fill => false})
+        :center_y => true})
     end  
 
 end

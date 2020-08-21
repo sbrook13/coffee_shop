@@ -2,26 +2,26 @@ require 'pry'
 class Cli
     attr_accessor :name
 
+    def initialize
+        @@spinner = tty_spinner
+    end
+
     def self.prompt
         TTY::Prompt.new(
             symbols: {marker:'☕️'}
         )
     end
 
-    def self.font
-        TTY::Font.new(:starwars)
-    end
-
-    def self.spinner
-        TTY::Spinner.new("[:spinner] Coffee's brewing ...", format: :star)
+    def tty_spinner
+        spinner = TTY::Spinner.new("[:spinner] Coffee's brewing ...", format: :star)
     end
 
     def start
         prompt = TTY::Prompt.new
         font = TTY::Font.new(:starwars)
         system "clear"
-        # App.play_music
-        # App.print_coffee_image
+        App.play_music
+        App.print_coffee_image
         sleep(1)
         puts "\n"
         system "echo WELCOME TO THE | lolcat -a -d 20"
@@ -57,9 +57,9 @@ class Cli
     end     
 
     def self.prep_drink
-        # spinner.auto_spin
+        @@spinner.auto_spin
         sleep(2)
-        # spinner.stop(" ☕️ Coffee's ready!")
+        @@spinner.stop(" ☕️ Coffee's ready!")
         sleep(0.5)
         choices = ["Order Again", "Exit"]
         answer = prompt.select("What else can we help you with?", choices)
@@ -76,7 +76,7 @@ class Cli
         puts "\n"
         system "figlet GOODBYE! | lolcat -a -d 10"
         sleep(0.5)
-        # App.stop_music
+        App.stop_music
         abort
     end  
 
