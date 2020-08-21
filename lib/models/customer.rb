@@ -4,20 +4,10 @@ class Customer < ActiveRecord::Base
 
     validates :name, presence: true
 
-    # def initialize 
-    #     @user = nil
-    #     @final_choice = nil
-    # end
-
     def self.prompt
         TTY::Prompt.new(
             symbols: {marker:'☕️'}
         )
-    end
-
-    def total_orders
-        total_count = Order.all.find_by(customer: self).count
-        puts "This is your #{total_count +1} order with us!"
     end
 
     def self.sign_up
@@ -41,7 +31,6 @@ class Customer < ActiveRecord::Base
         @@name = returning_customer
         Order.assign_customer(@@name)
         welcome
-        # Customer.find_by(@name).total_count
         Cli.return_customer_menu
     end
 

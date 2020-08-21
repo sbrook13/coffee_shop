@@ -1,7 +1,6 @@
 class Order < ActiveRecord::Base
     belongs_to :drink
     belongs_to :customer
-
    
     def self.prompt
         TTY::Prompt.new(
@@ -15,7 +14,7 @@ class Order < ActiveRecord::Base
 
     def self.order_options
         puts "I'd be happy to help get the perfectly curated cup for you."
-        sleep(1.5)
+        sleep(1)
         puts "\n"
         menu_options = ["I need help deciding..", "I don't know, surprise me!", "I'll come back another time. >> EXIT"]
         choice =prompt.select("Do you know what you want to order?", menu_options)
@@ -82,7 +81,7 @@ class Order < ActiveRecord::Base
             if @@sweet == true
                 confirm = prompt.yes?("So you want a " + @@temp.downcase + " " + @@syrup.downcase + " drink?")
             else
-                confirm = prompt.yes?("So you want a " + @@temp.downcase + " drink?")
+                confirm = prompt.yes?("So you just want a " + @@temp.downcase + " coffee drink?")
             end    
         else  
             if @@sweet == true
@@ -112,6 +111,7 @@ class Order < ActiveRecord::Base
         puts "\n"
         i = 1
         drink_choices = []
+        drink_names = []
         drinks.each do |drink|
             if @@caffeine == false
                 if @@sweet == false
@@ -150,7 +150,7 @@ class Order < ActiveRecord::Base
                         puts "Option #{i}: #{@@temp} #{drink.name} with #{@@milk_alt} milk" 
                         puts drink.description
                         puts "______________________________"
-                        drink_choices << "#{@@temp} #{drink.name} with #{@@ilk_alt} milk"
+                        drink_choices << "#{@@temp} #{drink.name} with #{@@milk_alt} milk"
                     end
                 else
                     if @@milk == "0"
@@ -166,19 +166,27 @@ class Order < ActiveRecord::Base
                     end
                 end        
             puts "\n"
-            end    
+            drink_names << drink.name 
+            end 
             i+=1
         end  
-        sleep(1.5)
+        sleep(0.5)
         puts"\n"
         drink_choices << "Surprise me!"
+        original_name = nil
         selection = prompt.select("Which sounds good to you?", drink_choices)
-
+        n = 0
+        while n < drink_names.length do 
+            if selection == drink_choices[n]
+                original_name = drink_names[n]
+            end
+            n+=1
+        end
         if selection == "Surprise me!"
             random_drink
         else
             puts "Good choice!"
-            @@final_choice = Drink.find_by(name: selection)
+            @@final_choice = Drink.find_by(name: original_name)
             @@ordered_drink = selection
             save_final
         end
@@ -211,7 +219,6 @@ class Order < ActiveRecord::Base
 
     def self.save_final
         save_drink = prompt.yes?("Do you want to order this drink?")
-        binding.pry
         system "clear"
         if save_drink
             Order.create(customer: @@customer, drink: @@final_choice, ordered_drink: @@ordered_drink)
