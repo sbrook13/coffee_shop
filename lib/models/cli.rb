@@ -21,8 +21,13 @@ class Cli
         font = TTY::Font.new(:starwars)
         system "clear"
 <<<<<<< HEAD
+<<<<<<< HEAD
         # App.play_music
         # App.print_coffee_image
+=======
+        App.play_music
+        App.print_coffee_image
+>>>>>>> bcfc10a47775d5e9db35fc52346187f70c775a09
 =======
         App.play_music
         App.print_coffee_image
