@@ -21,8 +21,8 @@ class App
         :limit_y => 0,
         :center_x => true,
         :center_y => true,
-        :bg => "white",
-        :bg_fill => true})
+        :bg => "transparent",
+        :bg_fill => false})
     end
 
     def self.print_end_image
