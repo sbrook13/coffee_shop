@@ -113,6 +113,7 @@ class Order < ActiveRecord::Base
         drink_choices = []
         drink_names = []
         drinks.each do |drink|
+            drink_names << drink.name 
             if @@caffeine == false
                 if @@sweet == false
                     if @@milk == "0"
@@ -166,7 +167,6 @@ class Order < ActiveRecord::Base
                     end
                 end        
             puts "\n"
-            drink_names << drink.name 
             end 
             i+=1
         end  
@@ -201,6 +201,7 @@ class Order < ActiveRecord::Base
         puts random.name
         puts random.description
         puts "______________________________"
+        puts "\n"
         options = ["Yes", "Try Another Random Drink", "Start Over"]
         answer = prompt.select("Does that sound good?", options)
         if answer == "Yes"
