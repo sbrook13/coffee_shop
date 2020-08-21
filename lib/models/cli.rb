@@ -20,18 +20,22 @@ class Cli
     def start
         prompt = TTY::Prompt.new
         system "clear"
-        # App.play_music
-        # App.print_coffee_image
+        App.play_music
+        App.print_coffee_image
         sleep(1)
         puts "\n"
         puts "WELCOME TO THE DIRTY BEAN COFFEE SHOP!" 
         sleep(1)
         puts "\n"
-        is_new_customer = prompt.yes?('Have you been in before?')
-        if is_new_customer == true
-            Customer.names 
-        else
+        if Customer.all.count == 0
             Customer.sign_up
+        else
+            is_new_customer = prompt.yes?('Have you been in before?')
+            if is_new_customer == true
+                Customer.names 
+            else
+                Customer.sign_up
+            end
         end
     end  
 
@@ -65,10 +69,11 @@ class Cli
 
     def self.goodbye
         system "clear"
-         App.print_end_image
+        App.print_end_image
+        puts "\n"
         puts "Goodbye!"
         sleep(1)
-        #  App.stop_music
+        App.stop_music
         abort
     end  
 
