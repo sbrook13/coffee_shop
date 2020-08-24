@@ -75,10 +75,10 @@ class Cli
     def self.goodbye
         system "clear"
         App.print_end_image
-        puts "\n"
-        system "figlet GOODBYE! | lolcat -a -d 10"
-        sleep(0.5)
         App.stop_music
+        puts "\n"
+        system "figlet GOODBYE! | lolcat -a -d 20"
+        sleep(0.5)
         abort
     end  
 
